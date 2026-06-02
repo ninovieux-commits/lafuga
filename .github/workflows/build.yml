@@ -1,0 +1,28 @@
+name: Build La Fuga APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android APK (debug)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Compiler l'APK avec Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+
+      - name: Publier l'APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: lafuga-apk-debug
+          path: ${{ steps.buildozer.outputs.filename }}
