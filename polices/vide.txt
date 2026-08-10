@@ -1,0 +1,3 @@
+Ce dossier contient la police Unicode de La Fuga.
+Le fichier NotoSansCJKsc-Regular.otf couvre le latin, le cyrillique et les alphabets CJK.
+Ce fichier vide.txt sert juste a creer le dossier ; il peut etre supprime plus tard.
