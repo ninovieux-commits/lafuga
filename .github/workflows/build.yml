@@ -57,6 +57,24 @@ jobs:
           echo "=== 60 DERNIERES LIGNES ==="
           tail -n 60 build_log.txt || true
 
+      - name: DIAGNOSTIC FIREBASE
+        if: always()
+        run: |
+          echo "########## 1) LIGNES 'firebase' ##########"
+          grep -in firebase build_log.txt | head -50 || echo ">>> AUCUNE ligne firebase trouvee <<<"
+          echo ""
+          echo "########## 2) SERVICE JAVA (FugaMessaging) ##########"
+          grep -in "FugaMessaging" build_log.txt | head -20 || echo ">>> FugaMessagingService non mentionne <<<"
+          echo ""
+          echo "########## 3) add_src / gradle_dependencies ##########"
+          grep -inE "add_src|gradle_dependencies|gradle_depend|Unknown command|Unknown token|not a valid" build_log.txt | head -30 || echo ">>> rien <<<"
+          echo ""
+          echo "########## 4) RESULTAT GRADLE + ERREURS ##########"
+          grep -inE "BUILD SUCCESSFUL|BUILD FAILED|error:|FAILURE:|Could not resolve|Could not find|Duplicate class|Dex" build_log.txt | head -50 || echo ">>> rien <<<"
+          echo ""
+          echo "########## 5) TAILLE DU JOURNAL ##########"
+          wc -l build_log.txt || true
+
       - name: Sauvegarder le journal complet
         if: always()
         uses: actions/upload-artifact@v4
